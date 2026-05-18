@@ -3,85 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rifas Entre Amigos</title>
+    <title>Sorteos Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .ticket-selected { background-color: #ef4444 !important; color: white; transform: scale(1.05); }
-        .ticket-sold { background-color: #374151 !important; cursor: not-allowed; opacity: 0.5; }
+        .glass { background: rgba(24, 24, 27, 0.75); backdrop-filter: blur(12px); }
+        .ticket-selected { background-color: #dc2626 !important; border-color: #fca5a5 !important; color: white; transform: scale(1.05); }
+        .ticket-sold { background-color: #27272a !important; color: #52525b; cursor: not-allowed; text-decoration: line-through; border: none; }
     </style>
 </head>
-<body class="bg-zinc-950 text-white font-sans">
+<body class="bg-zinc-950 text-white font-sans selection:bg-red-600/30">
 
-    <header class="py-8 text-center border-b border-zinc-800">
-        <h1 class="text-4xl font-bold tracking-tighter text-red-600">RIFAS ENTRE AMIGOS</h1>
-        <p class="text-zinc-400 mt-2 italic">Fabricando tu suerte</p>
-    </header>
-
-    <section class="max-w-4xl mx-auto p-6 text-center">
-        <div class="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl">
-            <img src="https://via.placeholder.com/800x400" alt="Premio" class="w-full object-cover h-64">
-            <div class="p-6">
-                <h2 class="text-2xl font-bold uppercase">Combo Millonario + Súper Bonos</h2>
-                <p class="text-red-500 font-bold text-xl mt-2">1 Boleto por $6 | 10 Boletos por $60</p>
-            </div>
-        </div>
-    </section>
-
-    <main class="max-w-5xl mx-auto p-6">
-        <h3 class="text-center mb-6 text-zinc-500 uppercase tracking-widest text-sm font-semibold">Selecciona tus números</h3>
-        <div id="ticket-grid" class="grid grid-cols-5 sm:grid-cols-10 gap-2 mb-20">
-            </div>
-    </main>
-
-    <div id="checkout-bar" class="fixed bottom-0 w-full bg-zinc-900 border-t border-zinc-800 p-4 hidden">
+    <nav class="sticky top-0 z-50 glass border-b border-white/5 p-4">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <div>
-                <p class="text-sm text-zinc-400">Seleccionados: <span id="selected-count" class="font-bold text-white">0</span></p>
-                <p class="text-lg font-bold">Total: <span class="text-green-500" id="total-price">$0</span></p>
-            </div>
-            <button onclick="sendWhatsApp()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2">
-                Apartar por WhatsApp
+            <span class="font-black tracking-tighter text-xl text-red-600">SORTEOS PREMIUM</span>
+            <button onclick="document.getElementById('comprobante-section').scrollIntoView({behavior: 'smooth'})" class="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl text-xs font-bold border border-white/10 transition-all">
+                📸 Sube tu Pago
             </button>
         </div>
-    </div>
+    </nav>
 
-    <script>
-        const grid = document.getElementById('ticket-grid');
-        const checkoutBar = document.getElementById('checkout-bar');
-        const selectedCount = document.getElementById('selected-count');
-        const totalPrice = document.getElementById('total-price');
-        let selectedTickets = [];
+    <main class="max-w-3xl mx-auto p-4 space-y-6 pb-32">
 
-        // Generar 100 boletos (puedes cambiar a 1000)
-        for (let i = 1; i <= 100; i++) {
-            const btn = document.createElement('button');
-            btn.innerText = i.toString().padStart(2, '0');
-            btn.className = 'bg-zinc-800 border border-zinc-700 py-3 rounded-lg text-sm font-medium hover:border-red-500 transition-all';
-            
-            btn.onclick = () => {
-                if (selectedTickets.includes(i)) {
-                    selectedTickets = selectedTickets.filter(t => t !== i);
-                    btn.classList.remove('ticket-selected');
-                } else {
-                    selectedTickets.push(i);
-                    btn.classList.add('ticket-selected');
-                }
-                updateUI();
-            };
-            grid.appendChild(btn);
-        }
+        <section class="rounded-3xl overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl relative">
+            <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80" alt="Premio Mayor" class="w-full h-64 md:h-96 object-cover opacity-80">
+            <div class="absolute top-4 left-4 bg-red-600 text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-wider">
+                Gran Edición Temporal
+            </div>
+        </section>
 
-        function updateUI() {
-            selectedCount.innerText = selectedTickets.length;
-            totalPrice.innerText = `$${selectedTickets.length * 6}`;
-            checkoutBar.classList.toggle('hidden', selectedTickets.length === 0);
-        }
+        <section class="bg-zinc-900 border border-white/10 rounded-2xl p-6 text-center space-y-4 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400">El sorteo inicia en:</h3>
+            <div class="grid grid-cols-4 gap-2 max-w-sm mx-auto text-center">
+                <div class="bg-zinc-950 p-3 rounded-xl border border-white/5"><span id="days" class="block text-2xl md:text-3xl font-black text-red-500">00</span><span class="text-[10px] text-zinc-500 font-bold uppercase">Días</span></div>
+                <div class="bg-zinc-950 p-3 rounded-xl border border-white/5"><span id="hours" class="block text-2xl md:text-3xl font-black text-red-500">00</span><span class="text-[10px] text-zinc-500 font-bold uppercase">Horas</span></div>
+                <div class="bg-zinc-950 p-3 rounded-xl border border-white/5"><span id="minutes" class="block text-2xl md:text-3xl font-black text-red-500">00</span><span class="text-[10px] text-zinc-500 font-bold uppercase">Min</span></div>
+                <div class="bg-zinc-950 p-3 rounded-xl border border-white/5"><span id="seconds" class="block text-2xl md:text-3xl font-black text-red-500">00</span><span class="text-[10px] text-zinc-500 font-bold uppercase">Seg</span></div>
+            </div>
+            <p class="text-xs text-zinc-400 font-medium">
+                🔴 La transmisión en vivo se llevará a cabo a través de nuestras páginas oficiales de <span class="text-white font-bold">TikTok</span> y <span class="text-white font-bold">Facebook</span> basado en la Lotería Nacional.
+            </p>
+        </section>
 
-        function sendWhatsApp() {
-            const phone = "521234567890"; // Reemplaza con tu número
-            const msg = `Hola! Quiero apartar los boletos: ${selectedTickets.join(', ')}. Total: $${selectedTickets.length * 6}`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-    </script>
-</body>
-</html>
+        <section class="space-y-3">
+            <button onclick="togglePaquetes()" class="w-full bg-amber-500 hover:bg-amber-600 text-zinc-950 font-black p-4 rounded-xl text-center flex justify-between items-center transition-all shadow-[0_4px_20px_rgba(245,158,11,0.2)]">
+                <span>➡️ ESCOGE AQUÍ TUS BOLETOS ⬇️</span>
+                <span id="arrow-icon">▼</span>
+            </button>
+
+            <div id="lista-paquetes" class="hidden bg-zinc-900 border border-white/10 rounded-2xl p-2 space-y-1 overflow-hidden transition-all">
+                <button onclick="selectPaquete(1, 1)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>1 Boleto</span> <span class="text-amber-400">$1 MXN</span></button>
+                <button onclick="selectPaquete(5, 2)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>5 Boletos</span> <span class="text-amber-400">$2 MXN</span></button>
+                <button onclick="selectPaquete(10, 3)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>10 Boletos</span> <span class="text-amber-400">$3 MXN</span></button>
+                <button onclick="selectPaquete(15, 5)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>15 Boletos</span> <span class="text-amber-400">$5 MXN</span></button>
+                <button onclick="selectPaquete(20, 10)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>20 Boletos</span> <span class="text-amber-400">$10 MXN</span></button>
+                <button onclick="selectPaquete(30, 15)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>30 Boletos</span> <span class="text-amber-400">$15 MXN</span></button>
+                <button onclick="selectPaquete(40, 20)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>40 Boletos</span> <span class="text-amber-400">$20 MXN</span></button>
+                <button onclick="selectPaquete(50, 25)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>50 Boletos</span> <span class="text-amber-400">$25 MXN</span></button>
+                <button onclick="selectPaquete(100, 50)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>100 Boletos</span> <span class="text-amber-400">$50 MXN</span></button>
+                <button onclick="selectPaquete(150, 75)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>150 Boletos</span> <span class="text-amber-400">$75 MXN</span></button>
+                <button onclick="selectPaquete(200, 100)" class="w-full text-left p-3 rounded-xl hover:bg-white/5 flex justify-between text-sm font-bold border border-transparent hover:border-white/5"><span>200 Boletos</span> <span class="text-amber-400">$100 MXN</span></button>
+                <button onclick="activarSeleccionAbierta()" class="w-full text-center p-3 rounded-xl bg-zinc-800 text-white text-xs font-black tracking-widest uppercase mt-2 hover:bg-zinc-700">
+                    ➡️ Selección Abierta (Elegir a mano)
+                </button>
+            </div>
+        </section>
+
+        <section id="apartado-boletos" class="hidden bg-zinc-900 border border-white/10 rounded-3xl p-6 space-y-6 shadow-xl">
+            <div class="text-center">
+                <h2 class="text-lg font-black uppercase tracking-tight">Elige tus Números de la Suerte</h2>
+                <p id="info-seleccion" class="text-xs text-zinc-400 mt-1"></p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex gap-2">
+                    <input type="number" id="input-boleto-escrito" placeholder="Ej: 48" class="w-full bg-zinc-950 border border-white/10 p-3 rounded-xl text-center font-bold focus:outline-none focus:border-red-600">
+                    <button onclick="agregarBoletoEscrito()" class="bg-zinc-800 hover:bg-zinc-700 font-bold px-4 rounded-xl border border-white/5 text-sm">Agregar</button>
+                </div>
+                <button onclick="generarAlAzar()" id="btn-azar" class="w-full bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-sm font-bold
